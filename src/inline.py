@@ -60,6 +60,17 @@ def split_nodes_link(old_nodes: list[TextNode]) -> list[TextNode]:
 
     return new_nodes
 
+def text_to_textnodes(text: str) -> list[TextNodes]:
+    nodes = [TextNode(text, TextType.TEXT)]
+    delimiters = [("**", TextType.BOLD), ("`", TextType.CODE), ("_", TextType.ITALIC)]
+    for delimiter, text_type in delimiters:
+        nodes = split_nodes_delimiter(nodes, delimiter, text_type)
+
+    nodes = split_nodes_image(nodes)
+    nodes = split_nodes_link(nodes)
+
+    return nodes
+
 def extract_markdown_images(text: str) -> list[tuple[str, str]]:
     regex = r"!\[(.*?)\]\((.*?)\)"
     return re.findall(regex, text)
