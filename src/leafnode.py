@@ -10,7 +10,7 @@ class LeafNode(HTMLNode):
         super().__init__(tag=tag, value=value, props=props)
 
     def to_html(self) -> str:
-        if not self.value:
+        if self.value is None:
             raise ValueError("Leaf must have a value")
 
         openning, closing = "", ""
