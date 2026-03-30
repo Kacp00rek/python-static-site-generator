@@ -1,3 +1,5 @@
 public/
 __pycache__/
 test*
+static/*
+!static/.gitkeep

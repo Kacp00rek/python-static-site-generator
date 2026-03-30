@@ -1,5 +1,10 @@
 from textnode import *
 from leafnode import LeafNode
+import os
+import shutil
+
+PUBLIC = "public"
+STATIC = "static"
 
 def text_node_to_html_node(text_node: TextNode) -> LeafNode:
     match text_node.text_type:
@@ -16,10 +21,21 @@ def text_node_to_html_node(text_node: TextNode) -> LeafNode:
         case TextType.IMAGE:
             return LeafNode(tag="img", value="", props={"src": text_node.url, "alt": text_node.text})
 
+def copy_files() -> None:
+    if os.path.exists(PUBLIC):
+        print(f"Cleaning directory: {PUBLIC}")
+        shutil.rmtree(PUBLIC)
+    os.mkdir(PUBLIC)
+
+    def copy_log(src, dst):
+        if src != f"{STATIC}/.gitkeep":
+            print(f"Copying: {src} -> {dst}")
+            shutil.copy(src, dst)
+
+    shutil.copytree(STATIC, PUBLIC, dirs_exist_ok=True, copy_function=copy_log)
 
 def main() -> None:
-    text_node = TextNode("hello", TextType.TEXT, "url")
-    print(text_node)
+    copy_files()
 
 if __name__ == "__main__":
     main()
