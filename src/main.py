@@ -6,6 +6,8 @@ import shutil
 
 PUBLIC = "public"
 STATIC = "static"
+CONTENT = "content"
+TEMPLATE_PATH = "template.html"
 
 def text_node_to_html_node(text_node: TextNode) -> LeafNode:
     match text_node.text_type:
@@ -29,7 +31,7 @@ def copy_files() -> None:
     os.mkdir(PUBLIC)
 
     def copy_log(src, dst):
-        if src != f"{STATIC}/.gitkeep":
+        if os.path.basename(src) != ".gitkeep":
             print(f"Copying: {src} -> {dst}")
             shutil.copy(src, dst)
 
@@ -66,9 +68,19 @@ def generate_page(from_path: str, template_path: str, dest_path: str) -> None:
     with open(dest_path, "w") as file:
         file.write(template_content)
 
+def generate_pages_recursive(dir_path_content: str, template_path: str, dest_dir_path: str) -> None:
+    for root, _, files in os.walk(dir_path_content):
+        for file in files:
+            if file.endswith(".md"):
+                from_path = os.path.join(root, file)
+                rel_path = os.path.relpath(from_path, dir_path_content)
+                dest_path = os.path.join(dest_dir_path, rel_path)
+                dest_path = dest_path.replace(".md", ".html")
+                generate_page(from_path, template_path, dest_path)
+
 def main() -> None:
     copy_files()
-    generate_page("content/index.md", "template.html", "public/index.html")
+    generate_pages_recursive(CONTENT, TEMPLATE_PATH, PUBLIC)
 
 if __name__ == "__main__":
     main()
