@@ -39,7 +39,7 @@ def markdown_to_html_node(markdown: str) -> HTMLNode:
             case BlockType.CODE:
                 tag = "pre"
                 block = block[4:-3]
-                children = [ParentNode(tag="code", children=[ParentNode(tag=None, value=block)])]
+                children = [ParentNode(tag="code", children=[LeafNode(tag=None, value=block)])]
             case BlockType.PARAGRAPH:
                 tag = "p"
                 children = text_to_children(block)

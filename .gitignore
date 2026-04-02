@@ -2,4 +2,9 @@ public/
 __pycache__/
 test*
 static/*
-!static/.gitkeep
+!static/images/
+static/images/*
+!static/images/.gitkeep
+!static/index.css
+content/*
+!content/.gitkeep

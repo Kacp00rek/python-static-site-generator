@@ -1,5 +1,6 @@
 from textnode import *
 from leafnode import LeafNode
+from markdown_to_html import markdown_to_html_node
 import os
 import shutil
 
@@ -34,8 +35,40 @@ def copy_files() -> None:
 
     shutil.copytree(STATIC, PUBLIC, dirs_exist_ok=True, copy_function=copy_log)
 
+def extract_title(markdown: str) -> str:
+    lines = markdown.split("\n")
+
+    for line in lines:
+        line = line.strip()
+        if line.startswith("# "):
+            return line[1:].strip()
+
+    raise ValueError("There is no h1 header")
+
+def generate_page(from_path: str, template_path: str, dest_path: str) -> None:
+    print(f"Generating page from {from_path} to {dest_path} using {template_path}")
+    with open(from_path, "r") as file:
+        from_content = file.read()
+    with open(template_path, "r") as file:
+        template_content = file.read()
+
+    html_node = markdown_to_html_node(from_content)
+    html_content = html_node.to_html()
+    title = extract_title(from_content)
+
+    template_content = template_content.replace("{{ Title }}", title)
+    template_content = template_content.replace("{{ Content }}", html_content)
+
+    folder_path = os.path.dirname(dest_path)
+    if folder_path:
+        os.makedirs(folder_path, exist_ok=True)
+
+    with open(dest_path, "w") as file:
+        file.write(template_content)
+
 def main() -> None:
     copy_files()
+    generate_page("content/index.md", "template.html", "public/index.html")
 
 if __name__ == "__main__":
     main()
