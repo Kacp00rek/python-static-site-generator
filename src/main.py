@@ -3,8 +3,9 @@ from leafnode import LeafNode
 from markdown_to_html import markdown_to_html_node
 import os
 import shutil
+import sys
 
-PUBLIC = "public"
+PUBLIC = "docs"
 STATIC = "static"
 CONTENT = "content"
 TEMPLATE_PATH = "template.html"
@@ -47,7 +48,7 @@ def extract_title(markdown: str) -> str:
 
     raise ValueError("There is no h1 header")
 
-def generate_page(from_path: str, template_path: str, dest_path: str) -> None:
+def generate_page(from_path: str, template_path: str, dest_path: str, basepath: str) -> None:
     print(f"Generating page from {from_path} to {dest_path} using {template_path}")
     with open(from_path, "r") as file:
         from_content = file.read()
@@ -60,6 +61,8 @@ def generate_page(from_path: str, template_path: str, dest_path: str) -> None:
 
     template_content = template_content.replace("{{ Title }}", title)
     template_content = template_content.replace("{{ Content }}", html_content)
+    template_content = template_content.replace("href=\"/", f"href=\"{basepath}")
+    template_content = template_content.replace("src=\"/", f"src=\"{basepath}")
 
     folder_path = os.path.dirname(dest_path)
     if folder_path:
@@ -68,7 +71,7 @@ def generate_page(from_path: str, template_path: str, dest_path: str) -> None:
     with open(dest_path, "w") as file:
         file.write(template_content)
 
-def generate_pages_recursive(dir_path_content: str, template_path: str, dest_dir_path: str) -> None:
+def generate_pages_recursive(dir_path_content: str, template_path: str, dest_dir_path: str, basepath: str) -> None:
     for root, _, files in os.walk(dir_path_content):
         for file in files:
             if file.endswith(".md"):
@@ -76,11 +79,14 @@ def generate_pages_recursive(dir_path_content: str, template_path: str, dest_dir
                 rel_path = os.path.relpath(from_path, dir_path_content)
                 dest_path = os.path.join(dest_dir_path, rel_path)
                 dest_path = dest_path.replace(".md", ".html")
-                generate_page(from_path, template_path, dest_path)
+                generate_page(from_path, template_path, dest_path, basepath)
 
-def main() -> None:
+def main(basepath: str) -> None:
     copy_files()
-    generate_pages_recursive(CONTENT, TEMPLATE_PATH, PUBLIC)
+    generate_pages_recursive(CONTENT, TEMPLATE_PATH, PUBLIC, basepath)
 
 if __name__ == "__main__":
-    main()
+    basepath = "/"
+    if len(sys.argv) > 1:
+        basepath = sys.argv[1]
+    main(basepath)
