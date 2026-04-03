@@ -4,6 +4,8 @@ A from-scratch **Static Site Generator (SSG)** built with Python. This project m
 
 👉 **[Check out the live site](https://kacp00rek.github.io/python-static-site-generator/)**
 
+---
+
 ## Overview
 
 This generator handles everything from parsing complex Markdown strings to managing recursive directory structures and deploying to GitHub Pages.
@@ -15,6 +17,8 @@ This generator handles everything from parsing complex Markdown strings to manag
 - **Asset Management**: Synchronizes static files (CSS, images) from the `/static` directory.
 - **Template Engine**: Injects generated HTML and dynamic titles into a base `template.html`.
 - **GitHub Pages Ready**: Includes a configurable `basepath` system to handle subdirectory hosting.
+
+---
 
 ## Project Structure
 
@@ -33,6 +37,8 @@ This generator handles everything from parsing complex Markdown strings to manag
 └── main.sh             # Local dev script: builds for "/" and starts a server
 ```
 
+---
+
 ## How It Works
 
 1. **Clean & Copy**: The script clears the `docs/` folder and copies all assets from `static/`.
@@ -42,6 +48,8 @@ This generator handles everything from parsing complex Markdown strings to manag
     - Converts the tree into a raw HTML string.
 3. **Templating**: It replaces placeholders (`{{ Title }}`, `{{ Content }}`) in the template and fixes URL paths (adding the `basepath`).
 4. **Output**: Saves the final `.html` file in the corresponding location within `docs/`.
+
+---
 
 ## Usage
 
@@ -69,6 +77,7 @@ chmod +x build.sh
 
 This script injects the correct repository name into all internal links (e.g., `/python-static-site-generator/`), ensuring that images and styles load correctly on the live URL.
 
+---
 
 _Created as part of the [Boot.dev](https://boot.dev) "Build a Static Site Generator in Python" guided project._
 
