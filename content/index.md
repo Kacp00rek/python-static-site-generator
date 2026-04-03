@@ -2,8 +2,6 @@
 
 A from-scratch **Static Site Generator (SSG)** built with Python. This project mimics the core functionality of popular tools like Hugo or Jekyll, transforming Markdown content into a fully functional, SEO-optimized static website.
 
-You can see the generator in action and browse the site it creates here:
-
 ## Overview
 
 This generator handles everything from parsing complex Markdown strings to managing recursive directory structures and deploying to GitHub Pages.
@@ -36,10 +34,7 @@ This generator handles everything from parsing complex Markdown strings to manag
 ## How It Works
 
 1. **Clean & Copy**: The script clears the `docs/` folder and copies all assets from `static/`.
-2. **Extract & Transform**: It scans the `content/` folder for Markdown files. For each file:
-    - Extracts the page title from the first `H1` tag.
-    - Parses Markdown into an internal `HTMLNode` tree.
-    - Converts the tree into a raw HTML string.
+2. **Extract & Transform**: It scans the `content/` folder for Markdown files, extracts the page title from the first `H1` tag, parses the Markdown into an internal `HTMLNode` tree, and converts it into a raw HTML string.
 3. **Templating**: It replaces placeholders (`{{ Title }}`, `{{ Content }}`) in the template and fixes URL paths (adding the `basepath`).
 4. **Output**: Saves the final `.html` file in the corresponding location within `docs/`.
 
