@@ -1,9 +1,2 @@
 __pycache__/
 test*
-static/*
-!static/images/
-static/images/*
-!static/images/.gitkeep
-!static/index.css
-content/*
-!content/.gitkeep

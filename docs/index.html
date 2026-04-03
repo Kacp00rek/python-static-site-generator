@@ -3,16 +3,126 @@
     <head>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <title>Tolkien Fan Club</title>
-        <link href="/python-static-site-generator/index.css" rel="stylesheet" />
+        <title>Python Static Site Generator</title>
+        <link href="/index.css" rel="stylesheet" />
     </head>
 
     <body>
-        <article><div><h1>Tolkien Fan Club</h1><p><img src="/python-static-site-generator/images/tolkien.png" alt="JRR Tolkien sitting"></img></p><p>Here's the deal, <b>I like Tolkien</b>.</p><blockquote>"I am in fact a Hobbit in all but size."
-
--- J.R.R. Tolkien</blockquote><h2>Blog posts</h2><ul><li><a href="/python-static-site-generator/blog/glorfindel">Why Glorfindel is More Impressive than Legolas</a></li><li><a href="/python-static-site-generator/blog/tom">Why Tom Bombadil Was a Mistake</a></li><li><a href="/python-static-site-generator/blog/majesty">The Unparalleled Majesty of "The Lord of the Rings"</a></li></ul><h2>Reasons I like Tolkien</h2><ul><li>You can spend years studying the legendarium and still not understand its depths</li><li>It can be enjoyed by children and adults alike</li><li>Disney <i>didn't ruin it</i> (okay, but Amazon might have)</li><li>It created an entirely new genre of fantasy</li></ul><h2>My favorite characters (in order)</h2><ol><li>Gandalf</li><li>Bilbo</li><li>Sam</li><li>Glorfindel</li><li>Galadriel</li><li>Elrond</li><li>Thorin</li><li>Sauron</li><li>Aragorn</li></ol><p>Here's what <code>elflang</code> looks like (the perfect coding language):</p><pre><code>func main(){
-    fmt.Println("Aiya, Ambar!")
-}
-</code></pre><p>Want to get in touch? <a href="/python-static-site-generator/contact">Contact me here</a>.</p><p>This site was generated with a custom-built <a href="https://www.boot.dev/courses/build-static-site-generator-python">static site generator</a> from the course on <a href="https://www.boot.dev">Boot.dev</a>.</p></div></article>
+        <article>
+            <div>
+                <h1>Python Static Site Generator</h1>
+                <p>
+                    A from-scratch <b>Static Site Generator (SSG)</b> built with
+                    Python. This project mimics the core functionality of
+                    popular tools like Hugo or Jekyll, transforming Markdown
+                    content into a fully functional, SEO-optimized static
+                    website.
+                </p>
+                <h2>Overview</h2>
+                <p>
+                    This generator handles everything from parsing complex
+                    Markdown strings to managing recursive directory structures
+                    and deploying to GitHub Pages.
+                </p>
+                <p><b>Key Features</b></p>
+                <ul>
+                    <li>
+                        <b>Markdown Parsing</b>: Converts Markdown (including
+                        headers, bold, italics, code blocks, links, and images)
+                        into a custom HTML Node tree.
+                    </li>
+                    <li>
+                        <b>Recursive Generation</b>: Automatically mirrors the
+                        directory structure of the <code>/content</code> folder
+                        into the final <code>/docs</code> output.
+                    </li>
+                    <li>
+                        <b>Asset Management</b>: Synchronizes static files (CSS,
+                        images) from the <code>/static</code> directory.
+                    </li>
+                    <li>
+                        <b>Template Engine</b>: Injects generated HTML and
+                        dynamic titles into a base <code>template.html</code>.
+                    </li>
+                    <li>
+                        <b>GitHub Pages Ready</b>: Includes a configurable
+                        <code>basepath</code> system to handle subdirectory
+                        hosting.
+                    </li>
+                </ul>
+                <h2>Project Structure</h2>
+                <pre><code>.
+├── src/                # Core Python logic
+│   ├── main.py         # Application entry point
+│   ├── htmlnode.py     # HTML tree structure classes
+│   ├── textnode.py     # Markdown-to-Text conversion
+│   └── ...             # Logic for blocks, inline styles, etc.
+├── content/            # Source Markdown files (.md)
+├── static/             # Static assets (CSS, Images)
+├── docs/               # Production-ready HTML (Build output)
+├── template.html       # Base HTML skeleton
+├── build.sh            # Production script: builds for "/repo-name/"
+└── main.sh             # Local dev script: builds for "/" and starts a server
+</code></pre>
+                <h2>How It Works</h2>
+                <p>
+                    1. <b>Clean & Copy</b>: The script clears the
+                    <code>docs/</code> folder and copies all assets from
+                    <code>static/</code>. 2. <b>Extract & Transform</b>: It
+                    scans the <code>content/</code> folder for Markdown files.
+                    For each file: - Extracts the page title from the first
+                    <code>H1</code> tag. - Parses Markdown into an internal
+                    <code>HTMLNode</code> tree. - Converts the tree into a raw
+                    HTML string. 3. <b>Templating</b>: It replaces placeholders
+                    (<code>{{ Title }}</code>, <code>{{ Content }}</code>) in
+                    the template and fixes URL paths (adding the
+                    <code>basepath</code>). 4. <b>Output</b>: Saves the final
+                    <code>.html</code> file in the corresponding location within
+                    <code>docs/</code>.
+                </p>
+                <h2>Usage</h2>
+                <p>
+                    This project separates the local development environment
+                    from the production build to ensure links work correctly in
+                    both.
+                </p>
+                <h3>1. <b>Local Development (Preview)</b></h3>
+                <p>
+                    To build the site and spin up a local server to preview your
+                    changes:
+                </p>
+                <pre><code>chmod +x main.sh
+./main.sh
+</code></pre>
+                <p>
+                    The site will be available at
+                    <code>http://localhost:8888</code>. This script builds the
+                    site with a root basepath (<code>/</code>).
+                </p>
+                <h3>2. <b>Production Build (Deploy)</b></h3>
+                <p>
+                    When you are ready to push to GitHub Pages, run the
+                    production build script:
+                </p>
+                <pre><code>chmod +x build.sh
+./build.sh
+</code></pre>
+                <p>
+                    This script injects the correct repository name into all
+                    internal links (e.g.,
+                    <code>/python-static-site-generator/</code>), ensuring that
+                    images and styles load correctly on the live URL.
+                </p>
+                <h4>Credits</h4>
+                <p><i>This site was generated using a custom Python SSG.</i></p>
+                <p><b>Author:</b> Kacper Grzelakowski</p>
+                <p>
+                    <a
+                        href="https://github.com/Kacp00rek/python-static-site-generator"
+                        >View Source on GitHub</a
+                    >
+                </p>
+            </div>
+        </article>
     </body>
 </html>
